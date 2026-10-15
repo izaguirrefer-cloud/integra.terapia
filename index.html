@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Carta Natal · Panel Integra Terapia</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rose: #e8a0a8;
+    --rose-light: #f2bfc5;
+    --rose-pale: #fdf0f2;
+    --mint: #8ecfc6;
+    --mint-light: #b4e3dc;
+    --mint-pale: #eaf7f5;
+    --sky: #90c4e0;
+    --sky-light: #b5d9ee;
+    --sky-pale: #eaf4fb;
+    --deep: #5a4a55;
+    --mist: #fdf0f2;
+    --text: #5a4a55;
+    --text-soft: #9a8090;
+    --border: rgba(232,160,168,0.28);
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  *, *::before, *::after { box-sizing: inherit; margin: 0; padding: 0; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    background: var(--mist);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 1.05rem;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, #f2bfc5 0%, #b4e3dc 50%, #b5d9ee 100%);
+    padding: 2.2rem 2rem;
+    text-align: center;
+    position: sticky;
+    top: env(safe-area-inset-top, 0px);
+    z-index: 10;
+    border-bottom: 1px solid rgba(232,160,168,0.3);
+  }
+
+  header .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem;
+    color: rgba(90,74,85,0.6);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    margin-bottom: 0.2rem;
+  }
+
+  header .logo span { color: var(--rose); }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.9rem;
+    font-weight: 400;
+    color: var(--deep);
+    letter-spacing: 0.05em;
+  }
+
+  header p {
+    font-size: 0.82rem;
+    color: rgba(90,74,85,0.55);
+    margin-top: 0.3rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* LAYOUT */
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border: 1px solid var(--border);
+    padding: 2.2rem;
+    margin-bottom: 1.5rem;
+    border-radius: 2px;
+    box-shadow: 0 2px 12px rgba(232,160,168,0.08);
+  }
+
+  .card:nth-child(1) { border-top: 3px solid var(--rose); }
+  .card:nth-child(2) { border-top: 3px solid var(--mint); }
+  .card:nth-child(3) { border-top: 3px solid var(--sky); }
+
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid;
+  }
+
+  .card:nth-child(1) .card-title { border-color: var(--rose-light); }
+  .card:nth-child(2) .card-title { border-color: var(--mint-light); }
+  .card:nth-child(3) .card-title { border-color: var(--sky-light); }
+
+  .card-title .icon { font-size: 1.2rem; }
+
+  /* FORM */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .form-grid.three { grid-template-columns: 1fr 1fr 1fr; }
+  .form-full { grid-column: 1 / -1; }
+
+  .field { display: flex; flex-direction: column; gap: 0.35rem; }
+
+  label {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+    font-weight: 400;
+  }
+
+  input, select, textarea {
+    font-family: 'Jost', sans-serif;
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--text);
+    background: white;
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    outline: none;
+    transition: border-color 0.25s, background 0.2s;
+    -webkit-appearance: none;
+    width: 100%;
+  }
+
+  input:focus, select:focus, textarea:focus { border-color: var(--mint); background: white; box-shadow: 0 0 0 3px rgba(142,207,198,0.15); }
+  textarea { min-height: 80px; resize: vertical; }
+
+  /* CHECKBOX GROUP */
+  .check-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.1rem;
+  }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    font-size: 0.88rem;
+    color: var(--text-soft);
+    padding: 0.5rem 0.9rem;
+    border: 1px solid rgba(142,207,198,0.35);
+    background: var(--mint-pale);
+    transition: all 0.2s;
+    user-select: none;
+    border-radius: 20px;
+  }
+
+  .check-item input[type=checkbox] { width: auto; padding: 0; }
+  .check-item:has(input:checked) {
+    background: var(--mint-light);
+    border-color: var(--mint);
+    color: var(--deep);
+    font-weight: 400;
+  }
+
+  /* BUTTON */
+  .btn-analyze {
+    width: 100%;
+    padding: 1.1rem;
+    background: linear-gradient(135deg, var(--rose) 0%, var(--mint) 50%, var(--sky) 100%);
+    color: white;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.15em;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.15s;
+    font-weight: 500;
+    border-radius: 2px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.12);
+    margin-top: 0.5rem;
+  }
+
+  .btn-analyze:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-analyze:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* RESULT */
+  #result-section { display: none; }
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+
+  .result-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    color: var(--deep);
+  }
+
+  .result-name {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    color: var(--text-soft);
+    margin-top: 0.2rem;
+  }
+
+  .btn-copy, .btn-new {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    padding: 0.55rem 1.2rem;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 400;
+  }
+
+  .btn-copy:hover { border-color: var(--sage); color: var(--sage); }
+  .btn-new:hover { border-color: var(--rose); color: var(--rose); }
+
+  .result-actions { display: flex; gap: 0.6rem; }
+
+  /* ANALYSIS BLOCKS */
+  .analysis-block {
+    border-left: 3px solid var(--mint);
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+    background: white;
+    border-radius: 0 4px 4px 0;
+    box-shadow: 0 1px 8px rgba(232,160,168,0.07);
+  }
+
+  .analysis-block:nth-child(3n+1) { border-left-color: var(--rose); background: #fffbfc; }
+  .analysis-block:nth-child(3n+2) { border-left-color: var(--mint); background: #f9fefe; }
+  .analysis-block:nth-child(3n+3) { border-left-color: var(--sky); background: #f7fbff; }
+  .analysis-block.rose-accent { border-left-color: var(--rose) !important; background: var(--rose-pale) !important; }
+
+  .block-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: var(--mint);
+    font-weight: 500;
+    margin-bottom: 0.6rem;
+  }
+
+  .analysis-block:nth-child(3n+1) .block-label { color: var(--rose); }
+  .analysis-block:nth-child(3n+3) .block-label { color: var(--sky); }
+  .analysis-block.rose-accent .block-label { color: var(--rose) !important; }
+
+  .block-content {
+    font-size: 1rem;
+    color: var(--text);
+    line-height: 1.9;
+    white-space: pre-wrap;
+  }
+
+  /* LOADING */
+  .loading {
+    display: none;
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+
+  .loading.active { display: block; }
+
+  .moon-spin {
+    font-size: 2rem;
+    display: inline-block;
+    animation: spin 3s linear infinite;
+    margin-bottom: 1rem;
+  }
+
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+  .loading p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    color: var(--text-soft);
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1.5rem 0;
+  }
+
+  /* NOTA PRIVADA */
+  .private-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--text-soft);
+    background: linear-gradient(90deg, var(--rose-pale), var(--mint-pale), var(--sky-pale));
+    padding: 0.45rem 1rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(232,160,168,0.3);
+    border-radius: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .form-grid { grid-template-columns: 1fr; }
+    .form-grid.three { grid-template-columns: 1fr 1fr; }
+    .card { padding: 1.5rem; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    /* Mantenemos paleta pastel clara incluso en dark mode */
+    body { background: #fdf0f2; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">integra<span>.</span>terapia</div>
+  <h1>✦ Panel de Carta Natal</h1>
+  <p>USO PRIVADO · TERAPEUTA</p>
+</header>
+
+<div class="container">
+
+  <div class="private-badge">🔒 Panel privado — solo para uso tuyo</div>
+
+  <!-- FORM -->
+  <div id="form-section">
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🌟</span> Datos de la persona</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Nombre completo</label>
+          <input type="text" id="nombre" placeholder="Nombre y apellido">
+        </div>
+        <div class="field">
+          <label>Género / Pronombre (opcional)</label>
+          <select id="genero">
+            <option value="">— No especificar —</option>
+            <option>Femenino (ella)</option>
+            <option>Masculino (él)</option>
+            <option>No binario (elle)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Fecha de nacimiento</label>
+          <input type="date" id="fecha">
+        </div>
+        <div class="field">
+          <label>Hora de nacimiento</label>
+          <input type="time" id="hora" placeholder="HH:MM">
+        </div>
+        <div class="field form-full">
+          <label>Lugar de nacimiento (ciudad, país)</label>
+          <input type="text" id="lugar" placeholder="Ej: Córdoba, Argentina">
+        </div>
+        <div class="field form-full">
+          <label>¿Qué está transitando o busca entender? (opcional)</label>
+          <textarea id="contexto" placeholder="Ej: Está en un momento de cambio laboral, siente que no encuentra su propósito…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔮</span> Áreas a profundizar</div>
+      <div class="check-group" id="areas-check">
+        <label class="check-item"><input type="checkbox" value="Sol, Luna y Ascendente" checked> ☀️ Sol · Luna · Ascendente</label>
+        <label class="check-item"><input type="checkbox" value="propósito de vida y misión del alma" checked> ✦ Propósito de vida</label>
+        <label class="check-item"><input type="checkbox" value="amor y vínculos (Venus, casa 7)" checked> 💕 Amor y vínculos</label>
+        <label class="check-item"><input type="checkbox" value="trabajo y vocación (casa 10, Saturno)" checked> 🌿 Trabajo y vocación</label>
+        <label class="check-item"><input type="checkbox" value="heridas y sanación (Quirón, casa 12)"> 🌀 Heridas y sanación</label>
+        <label class="check-item"><input type="checkbox" value="dones y talentos (casa 2, Júpiter)"> 🌟 Dones y talentos</label>
+        <label class="check-item"><input type="checkbox" value="karma y nodos lunares (nodo norte y sur)"> 🪐 Karma y nodos</label>
+        <label class="check-item"><input type="checkbox" value="cuerpo y energía (Marte, casa 6)"> 🔥 Cuerpo y energía</label>
+        <label class="check-item"><input type="checkbox" value="sombra y inconsciente (Plutón, casa 8)"> 🌑 Sombra e inconsciente</label>
+        <label class="check-item"><input type="checkbox" value="tránsitos actuales relevantes"> 🔄 Tránsitos actuales</label>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">⚙️</span> Estilo del análisis</div>
+      <div class="form-grid">
+        <div class="field">
+          <label>Tono</label>
+          <select id="tono">
+            <option value="espiritual y simbólico">Espiritual y simbólico</option>
+            <option value="psicológico y profundo">Psicológico y profundo</option>
+            <option value="práctico y concreto">Práctico y concreto</option>
+            <option value="mixto (espiritual + práctico)">Mixto (espiritual + práctico)</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Extensión</label>
+          <select id="extension">
+            <option value="detallado y completo">Detallado y completo</option>
+            <option value="moderado (resumen ejecutivo)">Moderado (resumen)</option>
+            <option value="muy profundo y extenso">Muy profundo y extenso</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-analyze" id="btn-generar">✦ GENERAR ANÁLISIS DE CARTA NATAL</button>
+
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" id="loading">
+    <div class="moon-spin">🌙</div>
+    <p>Leyendo el cielo en el momento del nacimiento…</p>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-section">
+    <div class="result-header">
+      <div>
+        <div class="result-title">Análisis de Carta Natal</div>
+        <div class="result-name" id="result-name-label"></div>
+      </div>
+      <div class="result-actions">
+        <button class="btn-copy" onclick="copiarAnalisis()">📋 Copiar</button>
+        <button class="btn-new" onclick="nuevaCarta()">↩ Nueva carta</button>
+      </div>
+    </div>
+    <div id="analysis-blocks"></div>
+    <hr class="divider">
+    <p style="font-size:0.78rem;color:var(--text-soft);font-style:italic;text-align:center;line-height:1.7">
+      Este análisis es una base interpretativa generada por IA · El criterio final y la lectura integradora es tuyo como terapeuta
+    </p>
+  </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('btn-generar').addEventListener('click', analizarCarta);
+});
+
+async function analizarCarta() {
+  const nombre = document.getElementById('nombre').value.trim();
+  const fecha  = document.getElementById('fecha').value;
+  const hora   = document.getElementById('hora').value;
+  const lugar  = document.getElementById('lugar').value.trim();
+  const genero  = document.getElementById('genero').value;
+  const contexto = document.getElementById('contexto').value.trim();
+  const tono     = document.getElementById('tono').value;
+  const extension = document.getElementById('extension').value;
+
+  if (!nombre || !fecha || !lugar) {
+    alert('Por favor completá al menos nombre, fecha y lugar de nacimiento.');
+    return;
+  }
+
+  const areas = [...document.querySelectorAll('#areas-check input:checked')].map(cb => cb.value);
+  if (areas.length === 0) {
+    alert('Seleccioná al menos un área a analizar.');
+    return;
+  }
+
+  const d = new Date(fecha + 'T12:00:00');
+  const fechaStr = d.toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Mostrar loading
+  document.getElementById('form-section').style.display = 'none';
+  document.getElementById('result-section').style.display = 'none';
+  const loadingEl = document.getElementById('loading');
+  loadingEl.style.display = 'block';
+
+  const prompt = `Eres una astróloga experta en astrología occidental, psicología transpersonal y espiritualidad. Realizá el análisis de carta natal de la siguiente persona para una terapeuta holística que hará la lectura final.
+
+DATOS:
+- Nombre: ${nombre}
+- Fecha de nacimiento: ${fechaStr}
+- Hora de nacimiento: ${hora || 'no disponible'}
+- Lugar de nacimiento: ${lugar}
+${genero ? `- Pronombre: ${genero}` : ''}
+${contexto ? `- Lo que está transitando: ${contexto}` : ''}
+
+ÁREAS A ANALIZAR: ${areas.join(', ')}
+TONO: ${tono}
+EXTENSIÓN: ${extension}
+
+INSTRUCCIONES:
+- Deducí los signos solares, lunares, ascendente y planetas a partir de los datos reales de astrología occidental.
+- Si no hay hora de nacimiento, aclaralo y trabajá con lo disponible.
+- Sé específica y profunda, no uses frases genéricas.
+- Incluí siempre al final una sección "Claves para la terapeuta".
+
+FORMATO — usá EXACTAMENTE esta estructura para cada sección:
+[SECCIÓN: Nombre de la sección]
+Contenido aquí.
+[/SECCIÓN]
+
+Comenzá directamente con la primera sección.`;
+
+  try {
+    const sample = await claude.use('sample');
+
+    if (!sample) {
+      loadingEl.style.display = 'none';
+      document.getElementById('form-section').style.display = 'block';
+      alert('La función de IA no está disponible en este momento. Asegurate de estar logueada en Claude y volvé a intentarlo.');
+      return;
+    }
+
+    let textoAcumulado = '';
+    await sample(prompt, {
+      modelTier: 'complex',
+      onText: ({ text }) => { textoAcumulado = text; }
+    });
+
+    loadingEl.style.display = 'none';
+
+    if (!textoAcumulado.trim()) {
+      document.getElementById('form-section').style.display = 'block';
+      alert('La respuesta llegó vacía. Intentá de nuevo.');
+      return;
+    }
+
+    renderAnalysis(nombre, fechaStr, hora, lugar, textoAcumulado);
+
+  } catch (err) {
+    loadingEl.style.display = 'none';
+    document.getElementById('form-section').style.display = 'block';
+    alert('Error: ' + (err.message || 'Algo salió mal') + '\n\nReintentá en unos segundos.');
+  }
+}
+
+function renderAnalysis(nombre, fecha, hora, lugar, text) {
+  document.getElementById('loading').classList.remove('active');
+  document.getElementById('result-section').style.display = 'block';
+
+  document.getElementById('result-name-label').textContent =
+    `${nombre} · ${fecha}${hora ? ' · ' + hora : ''} · ${lugar}`;
+
+  const blocksEl = document.getElementById('analysis-blocks');
+  blocksEl.innerHTML = '';
+
+  // Parse sections
+  const sectionRegex = /\[SECCIÓN:\s*([^\]]+)\]([\s\S]*?)\[\/SECCIÓN\]/g;
+  let match;
+  let found = false;
+  let idx = 0;
+
+  while ((match = sectionRegex.exec(text)) !== null) {
+    found = true;
+    const title = match[1].trim();
+    const content = match[2].trim();
+    const isLast = title.toLowerCase().includes('clave') || title.toLowerCase().includes('terapeuta');
+
+    const block = document.createElement('div');
+    block.className = `analysis-block ${isLast ? 'rose-accent' : (idx % 2 === 1 ? '' : '')}`;
+    block.innerHTML = `
+      <div class="block-label">${isLast ? '🔮 ' : '✦ '}${title.toUpperCase()}</div>
+      <div class="block-content">${content}</div>
+    `;
+    blocksEl.appendChild(block);
+    idx++;
+  }
+
+  // Fallback si no parsea bien
+  if (!found) {
+    const block = document.createElement('div');
+    block.className = 'analysis-block';
+    block.innerHTML = `
+      <div class="block-label">✦ ANÁLISIS COMPLETO</div>
+      <div class="block-content">${text}</div>
+    `;
+    blocksEl.appendChild(block);
+  }
+}
+
+function copiarAnalisis() {
+  const blocks = document.querySelectorAll('.analysis-block');
+  let texto = `ANÁLISIS DE CARTA NATAL\n${document.getElementById('result-name-label').textContent}\n\n`;
+  blocks.forEach(b => {
+    const label = b.querySelector('.block-label')?.textContent || '';
+    const content = b.querySelector('.block-content')?.textContent || '';
+    texto += `${label}\n${content}\n\n`;
+  });
+  navigator.clipboard.writeText(texto).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ Copiado';
+    setTimeout(() => btn.textContent = '📋 Copiar', 2000);
+  });
+}
+
+function nuevaCarta() {
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('form-section').style.display = 'block';
+  document.getElementById('nombre').value = '';
+  document.getElementById('fecha').value = '';
+  document.getElementById('hora').value = '';
+  document.getElementById('lugar').value = '';
+  document.getElementById('genero').value = '';
+  document.getElementById('contexto').value = '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
